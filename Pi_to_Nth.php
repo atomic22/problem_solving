@@ -1,13 +1,5 @@
 <?php
-	session_start();
-	
 	if (isset($_POST["Submit"])){
-	$_SESSION['form_submitted'] = TRUE;
-	header("Location " . $_SERVER['PHP_SELF']);
-	$precision = $_POST["precision"];
-	}
-	elseif ($_SESSION['form_submitted'])
-	{
 		$precision = $_POST["precision"];
 	};
 	
