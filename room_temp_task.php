@@ -1,62 +1,8 @@
 <?php
-class floor_info{
-		
-	//public $floors;
-	
-	public function parsed_info($room_info){
-	//LOOP THROUGH ARRAY TO SEPERATE OUT INFO TO FLOORS 
-	$rooms = array();
-	$floors = array();
-	
-	for ($i=0; $i < count($room_info); $i+=3) {
-		
-		$floor = array("floor" => $room_info[$i]);
-		//NEED ROOMS ASSOCIATED WITH THE FLOOR NUMBERS AND THE TEMPS
-		$room = array_merge($floor, array("room" => $room_info[$i+1]));		
-		
-		//NEED ROOMS ASSOCIATED WITH THE FLOOR NUMBERS AND THE TEMPS
-		$temp[] = array_merge($room, array("temp" => $room_info[$i+2]));
-		
-	}
-	return $temp;
-  }
-	
-	public function avg_temp_per_floor($temps_for_floors){
-	
-		$floors = array();
-		//creates an array of floors
-		foreach ($temps_for_floors as $key) {
-			$floor = $key[0];
-			if(!in_array($floor, $floors)){
-		 		$floors[] = $floor;			
-			}
-			
-		}	
-		var_dump($floors);
-		$floor_temp = array();
-		foreach ($temps_for_floors as $key) {
-			$tsfloor = $key[0];
-			$temp = $key[1];
-	
-			for ($i=0; $i < count($floors) ; $i++) { 
-				$floor_number = $floors[$i];
-				if($tsfloor == $floor_number){
-				$floor_temp[$i] .= $temp;
-				
-				}
-			}
-				
-		}
-		var_dump($floor_temp);
-		
-		//return $floorvariable;
-	}
-}
-
+require_once 'room_temp_task.inc.php';
 /**     TASK IS TO TAKE AN ARRAY OF DATA AND FIGURE OUT:
 * 		THE NUMBER OF FLOOR, 
 * 		THE AVERAGE TEMP PER FLOOR,
-*		THE NUMER OF ROOMS PER FLOOR, 
 * 		AND COLDEST ROOM IN THE BUILDING.
 **/
 	//ARRAY IS IN GROUPS OF 3, FLOOR, ROOM, TEMP
@@ -82,33 +28,30 @@ class floor_info{
 
 	$floors = array();
 	
-	
-
 	$floor_info = new floor_info;
 	
-	$temp = $floor_info->parsed_info($room_info);
+	//first lets parse the information out so it's eaiser to deal with
+	$room_info = $floor_info->parsed_info($room_info);
 	
-	foreach ($temp as $key) {
-		//ALL INFORMATION PARSED
-		//echo "temp in room " .$key['room'] ." on floor " . $key['floor'] . " is ". $key['temp'] . "<br />";
-		$floor = $key['floor'];
-		$temps_for_floor[] = array($key['floor'], $key['temp']);
-		
-		//GET NUMBER OF FLOORS BY PUTTING ONLY THE UNIQUE FLOOR NUMBERS INTO A VARIABLE
-		if(!in_array($floor, $floors)){
-		 	$floors[] = $floor;			
-		}
-		
+	
+	
+	for ($i=0; $i < count($room_info); $i++) {
+		$avgtemp = $floor_info->avg_temp_per_floor($room_info[$i], $i);
+		echo "Average temp for floor " .$avgtemp[1] . " is  " . $avgtemp[0] ."<br />" ;
 	}
-	//var_dump($temps_for_floor);
 	
-	//send up the floor information
-	$avgtemp = $floor_info->avg_temp_per_floor($temps_for_floor); 
+
+	$total_floors = $floor_info->number_of_floors($room_info);
 	
-	//print_r($avgtemp);
-	//var_dump($floors);
+	echo "number of floors = " . count($total_floors) ."<br />";
 	
-	echo "number of floors = " . count($floors) ."<br />";
+	for ($i=0; $i < count($room_info); $i++) {
+		$coldest_area = $floor_info->find_coldest_area($room_info[$i], $i);
+	}
+		
+	$floor_num = $coldest_area[1] + 1;
 	
-	
-	echo "<br />";
+	echo "coldest temperature is: " . $coldest_area[0]['temp'] . 
+		" in room " . $coldest_area[0]['room'] . 
+		" on floor " . $floor_num . "<br />";
+?>

@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>Practice</name>
+=======
+	<name>problem_solving</name>
+>>>>>>> ed36efea67b563c3edd6fcf54c31f07ee52cc312
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
 	</buildSpec>
 	<natures>
+<<<<<<< HEAD
 		<nature>com.aptana.editor.php.phpNature</nature>
 		<nature>com.aptana.projects.webnature</nature>
+=======
+		<nature>com.aptana.projects.webnature</nature>
+		<nature>com.aptana.editor.php.phpNature</nature>
+>>>>>>> ed36efea67b563c3edd6fcf54c31f07ee52cc312
 	</natures>
 </projectDescription>
